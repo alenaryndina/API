@@ -25,13 +25,18 @@ class MapParams(object):
         elif event.key == 281 and self.zoom > 2:  # PG_DOWN
             self.zoom -= 1
         elif event.key == 276:  # LEFT
-            self.lon -= 0.005 * 2 ** (15 - self.zoom)
+            self.lon -= 0.01 * 2 ** (10 - self.zoom)
         elif event.key == 275:  # RIGHT
-            self.lon += 0.005 * 2 ** (15 - self.zoom)
+            self.lon += 0.01 * 2 ** (10 - self.zoom)
         elif event.key == 273 and self.lat < 85:  # UP
-            self.lat += 0.01 * 2 ** (15 - self.zoom)
+            self.lat += 0.01 * 2 ** (10 - self.zoom)
         elif event.key == 274 and self.lat > -85:  # DOWN
-            self.lat -= 0.01 * 2 ** (15 - self.zoom)
+            self.lat -= 0.01 * 2 ** (10 - self.zoom)
+
+        if self.lon > 180:
+            self.lon -= 360
+        if self.lon < -180:
+            self.lon += 360
 
 
 def load_map(mp):
