@@ -17,6 +17,12 @@ class MapParams(object):
     def ll(self):
         return ll(self.lon, self.lat)
 
+    def update(self, event):
+        if event.key == 280 and self.zoom < 19:  # PG_UP
+            self.zoom += 1
+        elif event.key == 281 and self.zoom > 2:  # PG_DOWN
+            self.zoom -= 1
+
 
 
 def load_map(mp):
@@ -27,7 +33,7 @@ def load_map(mp):
     if not response:
         print("Ошибка выполнения запроса:")
         print("Http статус:", response.status_code, "(", response.reason, ")")
-        sys.exit(1)
+        return None
 
     # Запишем полученное изображение в файл.
     map_file = "map.png"
@@ -52,17 +58,22 @@ def main():
 
     mp = MapParams()
     running = True
-
+    map_file = load_map(mp)
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            elif event.type == pygame.KEYUP:
+                mp.update(event)
+                map_file = load_map(mp)
+        if map_file:
+            screen.blit(pygame.image.load(map_file), (0, 0))
 
 
 
-        map_file = load_map(mp)
 
-        screen.blit(pygame.image.load(map_file), (0, 0))
+
+
 
         pygame.display.flip()
 
