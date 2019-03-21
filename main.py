@@ -7,13 +7,15 @@ import os
 def ll(x, y):
     return "{0},{1}".format(x, y)
 
+
 class MapParams(object):
     # Параметры по умолчанию.
     def __init__(self):
-        self.lat = 52.718552 # Координаты центра карты на старте.
+        self.lat = 52.718552  # Координаты центра карты на старте.
         self.lon = 41.426697
         self.zoom = 10  # Масштаб карты на старте.
         self.type = "map"  # Тип карты на старте.
+
     def ll(self):
         return ll(self.lon, self.lat)
 
@@ -22,7 +24,14 @@ class MapParams(object):
             self.zoom += 1
         elif event.key == 281 and self.zoom > 2:  # PG_DOWN
             self.zoom -= 1
-
+        elif event.key == 276:  # LEFT
+            self.lon -= 0.005 * 2 ** (15 - self.zoom)
+        elif event.key == 275:  # RIGHT
+            self.lon += 0.005 * 2 ** (15 - self.zoom)
+        elif event.key == 273 and self.lat < 85:  # UP
+            self.lat += 0.01 * 2 ** (15 - self.zoom)
+        elif event.key == 274 and self.lat > -85:  # DOWN
+            self.lat -= 0.01 * 2 ** (15 - self.zoom)
 
 
 def load_map(mp):
@@ -68,12 +77,6 @@ def main():
                 map_file = load_map(mp)
         if map_file:
             screen.blit(pygame.image.load(map_file), (0, 0))
-
-
-
-
-
-
 
         pygame.display.flip()
 
