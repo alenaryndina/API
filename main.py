@@ -32,7 +32,12 @@ class MapParams(object):
             self.lat += 0.01 * 2 ** (10 - self.zoom)
         elif event.key == 274 and self.lat > -85:  # DOWN
             self.lat -= 0.01 * 2 ** (10 - self.zoom)
-
+        elif event.key == 49:  # map key1
+            self.type = "map"
+        elif event.key == 50:  # sat key2
+            self.type = "sat"
+        elif event.key == 51:  # sat,skl key3
+            self.type = "sat,skl"
         if self.lon > 180:
             self.lon -= 360
         if self.lon < -180:
